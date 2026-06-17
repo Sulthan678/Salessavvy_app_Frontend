@@ -1,0 +1,82 @@
+.profile-dropdown {
+  position: relative;
+}
+
+
+/* ======================
+   BUTTON
+====================== */
+
+.profile-button {
+
+  background: transparent;
+
+  border: none;
+
+  color: white;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+
+/* ======================
+   MENU
+====================== */
+
+.dropdown-menu {
+
+  position: absolute;
+
+  top: 45px;
+  right: 0;
+
+  width: 180px;
+
+  background: white;
+
+  border-radius: 10px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+  overflow: hidden;
+
+  z-index: 1000;
+}
+
+
+/* ======================
+   LINKS
+====================== */
+
+.dropdown-menu a,
+.dropdown-menu button {
+
+  display: block;
+
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border: none;
+
+  background: white;
+
+  text-align: left;
+
+  text-decoration: none;
+
+  color: #222;
+
+  cursor: pointer;
+
+  font-size: 15px;
+}
+
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+
+  background: #f3f4f6;
+}

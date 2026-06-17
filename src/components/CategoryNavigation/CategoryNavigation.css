@@ -1,0 +1,23 @@
+.category-nav{
+  background-color: #90e0ef;
+  display:flex;
+  justify-content:space-around;
+  gap:20px;
+  /* margin-top: 10px; */
+  padding: 15px;
+  position: sticky;
+  top: 0;
+  /* z-index: 1000; */
+}
+
+.category-btn{
+  background:none;
+  border:none;
+  color: black;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.category-btn:hover{
+  text-decoration:none;
+}

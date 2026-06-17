@@ -1,0 +1,280 @@
+.orders-page-wrapper{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#f4f7fb;
+}
+
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.orders-main-content{
+  flex:1;
+  padding:40px 30px;
+}
+
+
+
+/* =========================
+   PAGE TITLE
+========================= */
+
+.orders-title{
+  text-align:center;
+  font-size:32px;
+  font-weight:700;
+  margin-bottom:40px;
+  color:#0d3b66;
+}
+
+
+
+/* =========================
+   ORDERS LIST
+========================= */
+
+.orders-list{
+  display:flex;
+  flex-direction:column;
+  gap:25px;
+  align-items:center;
+}
+
+
+
+/* =========================
+   ORDER CARD
+========================= */
+
+.order-card{
+  width:90%;
+  max-width:950px;
+
+  background:white;
+
+  border-radius:18px;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,0.08);
+
+  transition:0.3s ease;
+}
+
+
+
+.order-card:hover{
+  transform:translateY(-3px);
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.12);
+}
+
+
+
+/* =========================
+   CARD HEADER
+========================= */
+
+.order-card-header{
+  background:#0d3b66;
+
+  color:white;
+
+  padding:18px;
+
+  text-align:center;
+}
+
+
+
+.order-card-header h3{
+  margin:0;
+  font-size:20px;
+}
+
+
+
+/* =========================
+   CARD BODY
+========================= */
+
+.order-card-body{
+  display:flex;
+
+  gap:30px;
+
+  align-items:center;
+
+  padding:25px;
+}
+
+
+
+/* =========================
+   PRODUCT IMAGE
+========================= */
+
+.order-product-image{
+  width:220px;
+
+  height:260px;
+
+  object-fit:cover;
+
+  border-radius:12px;
+
+  background:#f0f0f0;
+}
+
+
+
+/* =========================
+   PRODUCT DETAILS
+========================= */
+
+.order-details{
+  flex:1;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:12px;
+}
+
+
+
+.product-name{
+  font-size:28px;
+
+  color:#0d3b66;
+
+  margin-bottom:10px;
+}
+
+
+
+.order-details p{
+  color:#555;
+
+  line-height:1.5;
+}
+
+
+
+.order-details h4{
+  margin:0;
+
+  color:#222;
+
+  font-weight:600;
+}
+
+
+
+/* =========================
+   EMPTY ORDERS
+========================= */
+
+.empty-orders{
+  text-align:center;
+
+  font-size:22px;
+
+  color:#666;
+
+  margin-top:50px;
+}
+
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error-message{
+  text-align:center;
+
+  color:red;
+
+  font-size:18px;
+
+  margin-top:30px;
+}
+
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media(max-width:768px){
+
+  .order-card-body{
+
+    flex-direction:column;
+
+    text-align:center;
+  }
+
+
+
+  .order-product-image{
+
+    width:100%;
+
+    max-width:300px;
+
+    height:auto;
+  }
+
+
+
+  .product-name{
+
+    font-size:24px;
+  }
+}
+
+/* =========================
+   EMPTY ORDERS
+========================= */
+
+.empty-orders-container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  margin-top:60px;
+
+  text-align:center;
+}
+
+
+
+.empty-orders-image{
+  width:180px;
+  margin-bottom:20px;
+  opacity:0.8;
+}
+
+
+
+.empty-orders-container h2{
+  font-size:32px;
+  color:#0d3b66;
+  margin-bottom:10px;
+}
+
+
+
+.empty-orders-container p{
+  color:#666;
+  font-size:18px;
+}
