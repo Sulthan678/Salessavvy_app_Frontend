@@ -1,8 +1,16 @@
+import { useNavigate } from "react-router-dom";
+
+
 function OrderCard({ order }) {
+
+  const navigate = useNavigate();
 
   return (
 
-    <div className="order-card">
+   <div className="order-card" onClick={() =>
+        navigate(`/orders/${order.order_id}`, 
+          {state: { order } }   )
+         } >
 
       {/* ======================
           ORDER HEADER

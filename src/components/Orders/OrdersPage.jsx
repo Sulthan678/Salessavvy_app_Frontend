@@ -4,6 +4,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
 import OrderCard from "./OrderCard";
+import OrderDetailsPage from "./OrderDetailsPage";
 import EmptyOrders from "./EmptyOrders";
 import "./Orders.css";
 

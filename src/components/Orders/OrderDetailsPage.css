@@ -1,0 +1,250 @@
+/* =========================
+   PAGE
+========================= */
+
+.order-details-page {
+    min-height: 100vh;
+    background: #f5f7fa;
+}
+
+.order-details-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.order-details-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* =========================
+   DETAILS CARD
+========================= */
+
+.order-details-card {
+    display: flex;
+    gap: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+
+    animation: fadeUp .6s ease;
+}
+
+.details-image {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.details-info{
+    flex:1;
+}
+
+.details-info h2{
+    margin-bottom:15px;
+    color:#222;
+}
+
+.details-info h3{
+    margin:10px 0;
+    font-weight:500;
+    color:#444;
+}
+
+.details-info p{
+    margin-bottom:20px;
+    color:#666;
+}
+
+/* =========================
+   TRACKING
+========================= */
+
+.tracking-card{
+
+    margin-top:35px;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+    animation:fadeUp .8s ease;
+}
+
+.tracking-card h2{
+
+    margin-bottom:25px;
+}
+
+.tracking-step{
+
+    position:relative;
+
+    padding-left:45px;
+
+    margin-bottom:35px;
+
+    opacity:0;
+
+    animation:fadeStep .6s forwards;
+}
+
+/* Delay each step */
+
+.tracking-step:nth-child(2){
+
+    animation-delay:.2s;
+}
+
+.tracking-step:nth-child(3){
+
+    animation-delay:.6s;
+}
+
+.tracking-step:nth-child(4){
+
+    animation-delay:1s;
+}
+
+.tracking-step::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:2px;
+
+    width:22px;
+
+    height:22px;
+
+    border-radius:50%;
+
+    border:2px solid #bdbdbd;
+
+    background:white;
+}
+
+.completed::before{
+
+    background:#28a745;
+
+    border-color:#28a745;
+
+}
+
+.tracking-step::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:10px;
+
+    top:26px;
+
+    width:2px;
+
+    height:34px;
+
+    background:#d6d6d6;
+}
+
+.tracking-step:last-child::after{
+
+    display:none;
+}
+
+.completed{
+
+    color:#28a745;
+
+    font-weight:600;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.back-button{
+
+    margin-top:30px;
+
+    padding:12px 20px;
+
+    border:none;
+
+    background:#1f6feb;
+
+    color:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.back-button:hover{
+
+    background:#1557c0;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes fadeStep{
+    from{
+        opacity:0;
+        transform:translateX(-20px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+.order-details-card{
+
+    flex-direction:column;
+
+    align-items:center;
+}
+
+.details-image{
+
+    width:220px;
+
+    height:220px;
+}
+}

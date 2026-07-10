@@ -5,6 +5,7 @@ import CustomerHome from "./pages/CustomerHome";
 import AdminHome from "./pages/AdminHome";
 import CartPage from "./components/Cart/CartPage";
 import OrdersPage from "./components/Orders/OrdersPage";
+import OrderDetailsPage from "./components/Orders/OrderDetailsPage";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/orders" element={<OrdersPage />} />
+      <Route path="/orders/:orderId" element={<OrderDetailsPage />}/>
     </Routes>
   );
 }
