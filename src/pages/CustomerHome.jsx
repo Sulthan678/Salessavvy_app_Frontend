@@ -3,6 +3,7 @@ import Header from "../components/Header/Header";
 import CategoryNavigation from "../components/CategoryNavigation/CategoryNavigation";
 import ProductList from "../components/Product/ProductList";
 import Footer from "../components/Footer/Footer";
+import "./CustomerHome.css";
 
 function CustomerHomePage() {
 
@@ -38,6 +39,41 @@ function CustomerHomePage() {
       console.error(err);
     }
   };
+
+
+
+//======================
+  const fetchSearchProducts = async (keyword) => {
+
+  try {
+
+    const res = await fetch(
+
+      `http://localhost:9090/api/products/search?keyword=${keyword}`,
+
+      {
+        credentials: "include"
+      }
+
+    );
+
+    if (!res.ok) {
+      throw new Error("Failed to search products");
+    }
+
+    const data = await res.json();
+
+    setProducts(data.products || []);
+
+  } catch (err) {
+
+    console.error(err);
+
+  }
+
+};
+
+//======================
 
   const fetchCartCount = async () => {
   setIsCartLoading(true);
@@ -91,19 +127,24 @@ function CustomerHomePage() {
   };
 
   return (
-    <div>
+    <div className="customer-home">
 
       <Header
         cartCount={isCartLoading ? "..." : cartCount}
         username={username}
+        onSearch={fetchSearchProducts}
       />
+
+      <main className="customer-content">
 
       <CategoryNavigation onCategoryClick={handleCategoryClick} />
 
       <ProductList
         products={products}
         onAddToCart={handleAddToCart}
-      />
+        />
+
+      </main>
 
       <Footer />
 
