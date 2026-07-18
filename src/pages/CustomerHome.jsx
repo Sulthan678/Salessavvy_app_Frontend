@@ -8,6 +8,7 @@ import "./CustomerHome.css";
 function CustomerHomePage() {
 
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("Shirts");
   const [cartCount, setCartCount] = useState(0);
   const [username, setUsername] = useState("");
   const [isCartLoading, setIsCartLoading] = useState(true);
@@ -104,6 +105,7 @@ function CustomerHomePage() {
 };    
 
   const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
     fetchProducts(category);
   };
 
@@ -137,7 +139,9 @@ function CustomerHomePage() {
 
       <main className="customer-content">
 
-      <CategoryNavigation onCategoryClick={handleCategoryClick} />
+      <CategoryNavigation 
+      selectedCategory={selectedCategory} 
+      onCategoryClick={handleCategoryClick} />
 
       <ProductList
         products={products}
