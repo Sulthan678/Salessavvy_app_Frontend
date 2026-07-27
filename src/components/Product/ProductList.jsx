@@ -1,4 +1,4 @@
-import "./Product.css";
+// import "./Product.css";
 import ProductCard from "./ProductCard";
 
 function ProductList({ products, onAddToCart }) {
@@ -8,7 +8,7 @@ function ProductList({ products, onAddToCart }) {
   }
 
   return (
-    <div className="product-grid">
+    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
 
       {products.map((product) => (
         <ProductCard

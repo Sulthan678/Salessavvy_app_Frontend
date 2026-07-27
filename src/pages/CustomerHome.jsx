@@ -3,11 +3,13 @@ import Header from "../components/Header/Header";
 import CategoryNavigation from "../components/CategoryNavigation/CategoryNavigation";
 import ProductList from "../components/Product/ProductList";
 import Footer from "../components/Footer/Footer";
-import "./CustomerHome.css";
+import { searchProducts, getSuggestions } from "../services/productService";
+// import "./CustomerHome.css";
 
 function CustomerHomePage() {
 
   const [products, setProducts] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Shirts");
   const [cartCount, setCartCount] = useState(0);
   const [username, setUsername] = useState("");
@@ -22,6 +24,8 @@ function CustomerHomePage() {
       fetchCartCount();
     }
   }, [username]);
+
+
 
   const fetchProducts = async (category = "Shirts") => {
     try {
@@ -48,23 +52,13 @@ function CustomerHomePage() {
 
   try {
 
-    const res = await fetch(
+    const res = await searchProducts(keyword);
 
-      `http://localhost:9090/api/products/search?keyword=${keyword}`,
+    setSelectedCategory("");
 
-      {
-        credentials: "include"
-      }
+    setProducts(res.data.products || []);
 
-    );
-
-    if (!res.ok) {
-      throw new Error("Failed to search products");
-    }
-
-    const data = await res.json();
-
-    setProducts(data.products || []);
+    setSuggestions([]);
 
   } catch (err) {
 
@@ -74,6 +68,27 @@ function CustomerHomePage() {
 
 };
 
+//======================
+  const fetchSuggestions = async (keyword) => {
+
+  if (!keyword.trim()) {
+    setSuggestions([]);
+    return;
+  }
+
+  try {
+
+    const res = await getSuggestions(keyword);
+
+    setSuggestions(res.data);
+
+  } catch (err) {
+
+    console.error(err);
+
+  }
+
+};
 //======================
 
   const fetchCartCount = async () => {
@@ -135,6 +150,8 @@ function CustomerHomePage() {
         cartCount={isCartLoading ? "..." : cartCount}
         username={username}
         onSearch={fetchSearchProducts}
+        onSuggestion={fetchSuggestions}
+        suggestions={suggestions}
       />
 
       <main className="customer-content">
