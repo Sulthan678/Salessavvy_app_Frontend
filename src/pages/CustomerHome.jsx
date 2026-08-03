@@ -124,6 +124,8 @@ function CustomerHomePage() {
     fetchProducts(category);
   };
 
+//======================
+
   const handleAddToCart = async (productId) => {
     try {
 
@@ -145,6 +147,7 @@ function CustomerHomePage() {
 
   return (
     <div className="customer-home">
+       <div className="min-h-screen bg-[#F5F7FB] flex flex-col">
 
       <Header
         cartCount={isCartLoading ? "..." : cartCount}
@@ -152,22 +155,23 @@ function CustomerHomePage() {
         onSearch={fetchSearchProducts}
         onSuggestion={fetchSuggestions}
         suggestions={suggestions}
-      />
+        />
 
       <main className="customer-content">
 
-      <CategoryNavigation 
-      selectedCategory={selectedCategory} 
-      onCategoryClick={handleCategoryClick} />
+        <CategoryNavigation 
+        selectedCategory={selectedCategory} 
+        onCategoryClick={handleCategoryClick} />
 
-      <ProductList
-        products={products}
-        onAddToCart={handleAddToCart}
-        />
+        <ProductList
+          products={products}
+          onAddToCart={handleAddToCart}
+          />
 
       </main>
 
       <Footer />
+        </div>
 
     </div>
   );

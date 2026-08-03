@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getSimilarProducts } from "../../services/productService";
 import ProductCard from "../Product/ProductCard";
 
 function SimilarProducts({ productId, onAddToCart }) {
 
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
@@ -15,6 +17,7 @@ function SimilarProducts({ productId, onAddToCart }) {
         try {
 
             const res = await getSimilarProducts(productId);
+                console.log(res.data);
 
             setProducts(res.data);
 
@@ -43,7 +46,10 @@ function SimilarProducts({ productId, onAddToCart }) {
                     <ProductCard
                         key={product.product_id}
                         product={product}
-                        onAddToCart={onAddToCart}
+                        showAddToCart={false}
+                        
+                        onClick={() => navigate(`/product/${product.product_id}`)}
+
                     />
 
                 ))}

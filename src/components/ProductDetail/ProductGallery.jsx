@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 function ProductGallery({ product }) {
@@ -7,9 +7,13 @@ function ProductGallery({ product }) {
         product.images?.[0]
     );
 
+    useEffect(() => {
+    setSelectedImage(product.images?.[0] || null);
+    }, [product.images]);
+
     return (
 
-        <div className="flex gap-5">
+        <div className="flex gap-5" >
 
             {/* Thumbnails */}
 

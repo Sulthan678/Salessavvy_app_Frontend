@@ -1,101 +1,131 @@
-function CartItemCard({
+import { motion } from "framer-motion";
+import {
+  Minus,
+  Plus,
+  Trash2,
+  Star,
+} from "lucide-react";
 
+function CartItemCard({
   item,
   onRemove,
-  onQuantityChange
-
+  onQuantityChange,
 }) {
-
   return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      className="mb-6 flex gap-6 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-lg"
+    >
+      {/* Image */}
+      <div className="flex h-40 w-40 flex-shrink-0 items-center justify-center rounded-2xl bg-gray-50">
+        <img
+          src={item.image_url}
+          alt={item.name}
+          className="max-h-full max-w-full object-contain transition duration-300 hover:scale-105"
+        />
+      </div>
 
-    <div className="cart-item-card">
+      {/* Details */}
+      <div className="flex flex-1 flex-col justify-between">
 
-      <img
-        src={item.image_url}
-        alt={item.name}
-        className="cart-item-image"
-      />
+        <div>
 
+          <div className="mb-2 flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                size={12}
+                className="fill-yellow-400 text-yellow-400"
+              />
+            ))}
 
+            <span className="ml-2 text-sm text-gray-500">
+              4.8
+            </span>
+          </div>
 
-      <div className="cart-item-details">
+          <h2 className="text-xl font-semibold text-gray-900">
+            {item.name}
+          </h2>
 
-        <h3>{item.name}</h3>
+          <p className="mt-2 line-clamp-2 text-gray-500">
+            {item.description}
+          </p>
 
-        <p>{item.description}</p>
+          <h3 className="mt-4 text-2xl font-bold text-indigo-600">
+            ₹{item.price_per_unit}
+          </h3>
 
-        <h4>₹ {item.price_per_unit}</h4>
+        </div>
 
+        {/* Bottom */}
+        <div className="mt-6 flex items-center justify-between">
 
+          {/* Quantity */}
 
-        {/* ======================
-            QUANTITY CONTROLS
-        ====================== */}
+          <div className="flex items-center gap-3 rounded-full border border-gray-200 px-2 py-2">
 
-        <div className="quantity-controls">
+            <button
+              onClick={() =>
+                onQuantityChange(
+                  item.product_id,
+                  item.quantity - 1
+                )
+              }
+              className="rounded-full p-2 transition hover:bg-gray-100"
+            >
+              <Minus size={16} />
+            </button>
+
+            <span className="w-8 text-center font-semibold">
+              {item.quantity}
+            </span>
+
+            <button
+              onClick={() =>
+                onQuantityChange(
+                  item.product_id,
+                  item.quantity + 1
+                )
+              }
+              className="rounded-full p-2 transition hover:bg-gray-100"
+            >
+              <Plus size={16} />
+            </button>
+
+          </div>
+
+          {/* Remove */}
 
           <button
             onClick={() =>
-
-              onQuantityChange(
-                item.product_id,
-                item.quantity - 1
-              )
+              onRemove(item.product_id)
             }
+            className="flex items-center gap-2 rounded-xl px-4 py-2 text-red-600 transition hover:bg-red-50"
           >
-            -
-          </button>
+            <Trash2 size={18} />
 
-
-
-          <span>{item.quantity}</span>
-
-
-
-          <button
-            onClick={() =>
-
-              onQuantityChange(
-                item.product_id,
-                item.quantity + 1
-              )
-            }
-          >
-            +
+            Remove
           </button>
 
         </div>
 
+      </div>
 
+      {/* Total */}
 
-        {/* ======================
-            REMOVE BUTTON
-        ====================== */}
+      <div className="flex min-w-[120px] items-center justify-end">
 
-        <button
-          className="remove-btn"
-          onClick={() =>
-            onRemove(item.product_id)
-          }
-        >
-          Remove
-        </button>
+        <span className="text-2xl font-bold text-gray-900">
+          ₹{item.price_per_unit * item.quantity}
+        </span>
 
       </div>
 
-
-
-      {/* ======================
-          ITEM TOTAL
-      ====================== */}
-
-      <div className="item-total">
-
-        ₹ {item.price_per_unit * item.quantity}
-
-      </div>
-
-    </div>
+    </motion.div>
   );
 }
 

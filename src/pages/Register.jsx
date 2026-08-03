@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import "../styles/Register.css";
+
+// import "../styles/Register.css";
 
 function Register() {
 
@@ -29,9 +29,9 @@ function Register() {
     }
 
     // Email validation
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/i.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    newErrors.email = "Invalid email format";
+      }
 
     // Password validation
     if (
@@ -97,77 +97,159 @@ navigate("/login");
   };
 
   return (
-    <div className="register-container">
-      <div className="register-card">
-        <h2>Register</h2>
+  <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
 
-        <form onSubmit={handleSubmit}>
-          {/* Username */}
-          <label>Username</label>
+    <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
+
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold text-indigo-600">
+          SalesSavvy
+        </h1>
+
+        <p className="mt-2 text-gray-500">
+          Create your account and start shopping.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+
+        {/* Username */}
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            Username
+          </label>
+
           <input
             type="text"
             name="username"
-            placeholder="Enter username"
+            placeholder="Enter your username"
             value={formData.username}
             onChange={handleChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200"
           />
-          {errors.username && <p className="error">{errors.username}</p>}
 
-          {/* Email */}
-          <label>Email</label>
+          {errors.username && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.username}
+            </p>
+          )}
+
+        </div>
+
+        {/* Email */}
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            Email
+          </label>
+
           <input
             type="email"
             name="email"
-            placeholder="Enter email"
+            placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200"
           />
-          {errors.email && <p className="error">{errors.email}</p>}
 
-          {/* Password */}
-          <label>Password</label>
-          <div className="password-box">
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.email}
+            </p>
+          )}
+
+        </div>
+
+        {/* Password */}
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            Password
+          </label>
+
+          <div className="relative">
+
             <input
               type={showPassword ? "text" : "password"}
               name="password"
-              placeholder="Enter password"
+              placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-16 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200"
             />
-            <span
-              className="show-btn"
+
+            <button
+              type="button"
               onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-indigo-600"
             >
               {showPassword ? "Hide" : "Show"}
-            </span>
-          </div>
-          {errors.password && <p className="error">{errors.password}</p>}
+            </button>
 
-          {/* Role */}
-          <label>Role</label>
+          </div>
+
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.password}
+            </p>
+          )}
+
+        </div>
+
+        {/* Role */}
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            Role
+          </label>
+
           <select
             name="role"
             value={formData.role}
             onChange={handleChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200"
           >
             <option value="">Select Role</option>
-            <option value="ADMIN">ADMIN</option>
-            <option value="CUSTOMER">CUSTOMER</option>
+            <option value="CUSTOMER">Customer</option>
+            <option value="ADMIN">Admin</option>
           </select>
-          {errors.role && <p className="error">{errors.role}</p>}
 
-          <button type="submit">Register</button>
-</form>
+          {errors.role && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.role}
+            </p>
+          )}
 
-<p className="bottom-text">
-  Already a user?{" "}
-  <Link to="/login" className="login-link">
-    Log in here
-  </Link>
-</p>
-      </div>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full rounded-lg bg-indigo-600 py-3 font-semibold text-white transition hover:bg-indigo-700"
+        >
+          Create Account
+        </button>
+
+      </form>
+
+      <p className="mt-6 text-center text-sm text-gray-600">
+        Already have an account?{" "}
+        <Link
+          to="/login"
+          className="font-semibold text-indigo-600 hover:underline"
+        >
+          Sign In
+        </Link>
+      </p>
+
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Register;

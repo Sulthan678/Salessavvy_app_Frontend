@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { motion } from "framer-motion";
+import logo from "../../assets/logo.png";
+import WishlistIcon from "../Wishlist/WishlistIcon";
 // import "./Header.css";
 import CartIcon from "../Cart/CartIcon";
 import ProfileDropdown from "../Profile/ProfileDropdown";
@@ -51,17 +53,20 @@ function Header({
         ease: "easeOut"
     }}
   className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
-    <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-4">
+    <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-0">
 
       {/* Logo */}
-      <motion.h2
-      onClick={() => navigate("/customerhome")}
-        whileHover={{scale: 1.05,}}
-        whileTap={{scale: 0.97,}}
-        className="text-3xl font-bold text-indigo-600 cursor-pointer transition-transform duration-300 hover:scale-105"
-      >
-        SalesSavvy
-      </motion.h2>
+      <motion.div
+          onClick={() => navigate("/customerhome")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.97 }}
+          className="cursor-pointer flex items-center justify-center">
+        <img
+            src={logo}
+            alt="SalesSavvy Logo"
+            className="h-21 w-auto"
+        />
+      </motion.div>
 
       {/* Search */}
       {onSearch && (
@@ -118,7 +123,10 @@ function Header({
       <div className="flex items-center gap-6">
 
         {username !== "Admin" && (
+          <>
+          <WishlistIcon />
           <CartIcon count={cartCount} />
+          </>
         )}
 
         <ProfileDropdown username={username} />

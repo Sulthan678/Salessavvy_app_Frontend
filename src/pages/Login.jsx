@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { loginUser } from "../services/authService";
-import { useNavigate } from "react-router-dom";
-import "../styles/Register.css";
+
+// import "../styles/Register.css";
 
 function Login() {
 
@@ -72,54 +72,108 @@ function Login() {
 
   };
 
-  return (
-    <div className="register-container">
-      <div className="register-card">
-        <h2>Login</h2>
+ return (
+  <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
 
-        <form onSubmit={handleSubmit}>
-          {/* Username */}
-          <label>Username</label>
+    <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
+
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold text-indigo-600">
+          SalesSavvy
+        </h1>
+
+        <p className="mt-2 text-gray-500">
+          Welcome back! Sign in to continue.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+
+        {/* Username */}
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            Username
+          </label>
+
           <input
             type="text"
             name="username"
-            placeholder="Enter username"
+            placeholder="Enter your username"
             value={formData.username}
             onChange={handleChange}
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200"
           />
-          {errors.username && <p className="error">{errors.username}</p>}
 
-          {/* Password */}
-          <label>Password</label>
-          <div className="password-box">
+          {errors.username && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.username}
+            </p>
+          )}
+
+        </div>
+
+        {/* Password */}
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            Password
+          </label>
+
+          <div className="relative">
+
             <input
               type={showPassword ? "text" : "password"}
               name="password"
-              placeholder="Enter password"
+              placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-16 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200"
             />
-            <span
-              className="show-btn"
+
+            <button
+              type="button"
               onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-indigo-600"
             >
               {showPassword ? "Hide" : "Show"}
-            </span>
+            </button>
+
           </div>
-          {errors.password && <p className="error">{errors.password}</p>}
 
-          <button type="submit">Sign In</button>
-        </form>
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.password}
+            </p>
+          )}
 
-        <p className="bottom-text">
-          New user?{" "}
-          <Link to="/register" className="login-link">
-            Sign up here
-          </Link>
-        </p>
-      </div>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full rounded-lg bg-indigo-600 py-3 font-semibold text-white transition hover:bg-indigo-700"
+        >
+          Sign In
+        </button>
+
+      </form>
+
+      <p className="mt-6 text-center text-sm text-gray-600">
+        New user?{" "}
+        <Link
+          to="/register"
+          className="font-semibold text-indigo-600 hover:underline"
+        >
+          Create an account
+        </Link>
+      </p>
+
     </div>
-  );
+
+  </div>
+);
 }
 
 export default Login;

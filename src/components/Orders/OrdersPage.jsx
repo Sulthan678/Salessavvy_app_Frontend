@@ -206,75 +206,96 @@ function OrdersPage() {
           MAIN CONTENT
       ====================== */}
 
-      <main className="orders-main-content">
+      <main className="mx-auto min-h-[70vh] max-w-7xl px-6 py-10">
 
-        <h1 className="orders-title">
-          Your Orders
-        </h1>
+  {/* Header */}
 
+  <div className="mb-10 flex items-center justify-between">
 
+    <div>
 
-        {/* LOADING */}
+      <h1 className="text-4xl font-bold text-gray-900">
+        My Orders
+      </h1>
 
-        {loading && (
+      <p className="mt-2 text-gray-500">
+        Track your purchases and view your order history.
+      </p>
 
-          <p>
-            Loading orders...
-          </p>
-        )}
+    </div>
 
+    {!loading && !error && orders.length > 0 && (
 
+      <div className="rounded-2xl border border-indigo-100 bg-indigo-50 px-5 py-3">
 
-        {/* ERROR */}
+        <p className="text-sm text-indigo-600">
+          Total Orders
+        </p>
 
-        {error && (
+        <h2 className="text-2xl font-bold text-indigo-700">
+          {orders.length}
+        </h2>
 
-          <p className="error-message">
-            {error}
-          </p>
-        )}
+      </div>
 
+    )}
 
+  </div>
 
-        {/* EMPTY ORDERS */}
+  {/* Loading */}
 
-        {!loading &&
-          !error &&
-          orders.length === 0 && (
+  {loading && (
 
-          
+    <div className="py-24 text-center text-lg text-gray-500">
+      Loading your orders...
+    </div>
 
-            <EmptyOrders />
+  )}
 
-          
-        )}
+  {/* Error */}
 
+  {!loading && error && (
 
+    <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center text-red-600">
 
-        {/* ORDERS LIST */}
+      {error}
 
-        {!loading &&
-          !error &&
-          orders.length > 0 && (
+    </div>
 
-          <div className="orders-list">
+  )}
 
-            {orders.map((order, index) => (
+  {/* Empty */}
 
-              <OrderCard
+  {!loading &&
+    !error &&
+    orders.length === 0 && (
 
-                key={index}
+      <EmptyOrders />
 
-                order={order}
+  )}
 
-              />
+  {/* Orders */}
 
-            ))}
+  {!loading &&
+    !error &&
+    orders.length > 0 && (
 
-          </div>
-        )}
+      <div className="grid gap-6">
 
-      </main>
+        {orders.map((order) => (
+
+          <OrderCard
+            key={order.order_id}
+            order={order}
+          />
+
+        ))}
+
+      </div>
+
+  )}
+
+</main>
 
 
 

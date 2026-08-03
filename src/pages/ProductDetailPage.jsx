@@ -4,10 +4,12 @@ import { getProductById } from "../services/productService";
 import ProductGallery from "../components/ProductDetail/ProductGallery";
 import ProductInfo from "../components/ProductDetail/ProductInfo";
 import ProductDescription from "../components/ProductDetail/ProductDescription";
+import ProductReviews from "../components/Reviews/ProductReviews";
 import SimilarProducts from "../components/ProductDetail/SimilarProducts";
 
 
 function ProductDetailPage() {
+    const [username, setUsername] = useState("");
 
     const { productId } = useParams();
 
@@ -17,10 +19,20 @@ function ProductDetailPage() {
         fetchProduct();
     }, [productId]);
 
+
+    useEffect(() => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+        }, [productId]);
+
+        
     const fetchProduct = async () => {
         try {
             const res = await getProductById(productId);
             setProduct(res.data);
+            setUsername(res.data.user.name);
         } catch (err) {
             console.error(err);
         }
@@ -51,15 +63,15 @@ function ProductDetailPage() {
 
                 <ProductGallery product={product} />
 
-                <ProductInfo product={product} />
+                <ProductInfo product={product}
+                username={username} />
 
             </div>
             <ProductDescription product={product}/>
+            <ProductReviews product={product} />
             <SimilarProducts productId={product.product_id}
                 onAddToCart={() => {}}/>
-
-
-                
+ 
             </div>  
 
         

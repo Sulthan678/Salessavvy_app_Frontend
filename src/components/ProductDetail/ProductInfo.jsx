@@ -1,15 +1,124 @@
-import { Star, ShoppingCart, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
+import {Heart, ShoppingCart, Star,Zap} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import QuantitySelector from "./QuantitySelector";
 import TrustBadges from "./TrustBadges";
 import ProductHighlights from "./ProductHighlights";
+import WishlistService from "../../services/WishlistService";
 
-function ProductInfo({ product }) {
-
+function ProductInfo({ product, username }) {
+   
+    const navigate = useNavigate();
+    const [isWishlisted, setIsWishlisted] = useState(false);
+    useEffect(() => {
+    checkWishlist();
+    }, [product.product_id]);
+    const [wishlistLoading, setWishlistLoading] = useState(false);
+    const [quantity, setQuantity] = useState(1);
     const originalPrice = Math.round(product.price * 1.4);
-
+    
     const discount = Math.round(
         ((originalPrice - product.price) / originalPrice) * 100
     );
+    
+    //WISHLIST  
+    const checkWishlist = async () => {
+
+    try {
+
+        const res = await WishlistService.checkWishlist(product.product_id);
+
+        setIsWishlisted(res.data);
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
+    };
+    //---------
+    const handleWishlist = async () => {
+
+    if (wishlistLoading) return;
+
+    setWishlistLoading(true);
+
+    try {
+
+        const res = await WishlistService.toggleWishlist(product.product_id);
+
+        const added = res.data;
+
+        setIsWishlisted(added);
+
+        if (added) {
+
+            toast.success("❤️ Added to Wishlist");
+
+        } else {
+
+            toast.success("💔 Removed from Wishlist");
+
+        }
+
+    } catch (err) {
+
+        console.error(err);
+
+        toast.error("Something went wrong");
+
+    } finally {
+
+        setWishlistLoading(false);
+
+    }
+
+    };
+
+
+    //ADD TO CART======================>
+        const handleAddToCart = async () => {
+    try {
+
+        const response = await fetch("http://localhost:9090/api/cart/add", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                productId: product.product_id,
+                quantity
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to add product");
+        }
+
+        toast.success("Added to cart!");
+
+        return true;
+
+    } catch (err) {
+        console.error(err);
+        toast.error("Failed to add product to cart");
+
+        return false;
+    }
+    };
+
+    //BUY NOW =======================>
+    const handleBuyNow = async () => {
+
+    const success = await handleAddToCart();
+    if (success) {
+        navigate("/cart");
+    }
+    };
 
     return (
 
@@ -45,10 +154,15 @@ function ProductInfo({ product }) {
                     4.8
                 </span>
 
-                <button
-                    className="text-indigo-600 hover:underline"
-                >
-                    (14 Reviews)
+            <button onClick={() => {
+            document.getElementById("customer-reviews")
+                ?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                    });
+                }}
+                    className="text-indigo-600 hover:underline" >
+                    (128 Reviews)
                 </button>
 
             </div>
@@ -81,6 +195,40 @@ function ProductInfo({ product }) {
 
             </div>
 
+            
+            {/* WishList */}
+            <div>
+
+    <button
+        onClick={handleWishlist}
+        disabled={wishlistLoading}
+        className={`flex items-center gap-3 rounded-2xl border px-5 py-3 font-semibold transition-all duration-300
+        ${
+            isWishlisted
+                ? "border-red-200 bg-red-50 text-red-600"
+                : "border-gray-300 bg-white text-gray-700 hover:border-red-300 hover:text-red-500"
+        }
+        ${wishlistLoading ? "opacity-60 cursor-not-allowed" : ""}
+        `}
+        >
+        <Heart
+            size={20}
+            className={`transition-all duration-300 ${
+                isWishlisted
+                    ? "fill-red-500 text-red-500 scale-110"
+                    : ""
+            }`}
+        />
+
+        {isWishlisted
+            ? "Saved to Wishlist"
+            : "Add to Wishlist"}
+
+        </button>
+
+        </div>
+
+            
             {/* Description */}
 
             <p className="max-w-xl text-lg leading-8 text-gray-600">
@@ -92,13 +240,15 @@ function ProductInfo({ product }) {
 
             {/* Quantity */}
 
-            <QuantitySelector />
+            <QuantitySelector quantity={quantity} setQuantity={setQuantity}
+            stock={product.stock}/>
 
             {/* Buttons */}
 
             <div className="flex gap-3">
 
                 <button
+                    onClick={handleAddToCart}
                     className="flex flex-1 items-center justify-center gap-3 rounded-2xl bg-indigo-600 py-4 text-lg font-semibold text-white transition hover:bg-indigo-700"
                 >
 
@@ -108,9 +258,9 @@ function ProductInfo({ product }) {
 
                 </button>
 
-                <button
-                    className="flex flex-1 items-center justify-center gap-3 rounded-2xl border border-indigo-600 py-4 text-lg font-semibold text-indigo-600 transition hover:bg-indigo-50"
-                >
+                <button 
+                    onClick={handleBuyNow}
+                    className="flex flex-1 items-center justify-center gap-3 rounded-2xl border border-indigo-600 py-4 text-lg font-semibold text-indigo-600 transition hover:bg-indigo-50">
 
                     <Zap size={20} />
 

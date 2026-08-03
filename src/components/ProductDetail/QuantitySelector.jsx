@@ -1,9 +1,7 @@
-import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import { Minus, Plus } from "lucide-react";
 
-function QuantitySelector() {
-
-    const [quantity, setQuantity] = useState(1);
+function QuantitySelector({ quantity, setQuantity, stock }) {
 
     return (
 
@@ -18,10 +16,11 @@ function QuantitySelector() {
             <div className="flex w-fit items-center gap-6 rounded-2xl border border-gray-300 px-6 py-3">
 
                 <button
-                    onClick={() =>
-                        quantity > 1 &&
-                        setQuantity(quantity - 1)
-                    }
+                    onClick={() => {
+                        if (quantity > 1) {
+                        setQuantity(quantity - 1);
+                        }
+                    }}
                 >
 
                     <Minus />
@@ -34,10 +33,12 @@ function QuantitySelector() {
 
                 </span>
 
-                <button
-                    onClick={() =>
-                        setQuantity(quantity + 1)
-                    }
+                <button disabled={quantity >= stock}
+                    onClick={() =>{
+                        if (quantity < stock) {
+                            setQuantity(quantity + 1);
+                        }
+                    }}
                 >
 
                     <Plus />

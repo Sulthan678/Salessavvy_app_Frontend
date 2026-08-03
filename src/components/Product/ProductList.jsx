@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 // import "./Product.css";
 import ProductCard from "./ProductCard";
 
 function ProductList({ products, onAddToCart }) {
+
+  const navigate = useNavigate();
 
   if (!products || products.length === 0) {
     return <p>No products available</p>;
@@ -15,6 +18,7 @@ function ProductList({ products, onAddToCart }) {
           key={product.product_id}
           product={product}
           onAddToCart={onAddToCart}
+          onClick={() => navigate(`/product/${product.product_id}`)}
         />
       ))}
 

@@ -490,101 +490,134 @@ function CartPage() {
      LOADING UI
   ========================= */
 
-  if (loading) {
-
-    return <h2>Loading cart...</h2>;
-
-  }
-
-
-
-  /* =========================
-     ERROR UI
-  ========================= */
-
-  if (error) {
-
-    return <h2>{error}</h2>;
-
-  }
-
-
-
-  /* =========================
-     MAIN UI
-  ========================= */
-
   return (
+  <div className="min-h-screen bg-gray-50">
 
-    <div className="cart-page-wrapper">
+    <Header
+      username={username}
+      cartCount={cartItems.length}
+    />
 
-      <Header
-        username={username}
-        cartCount={cartItems.length}
-      />
+    <main className="mx-auto max-w-7xl px-6 py-10">
 
+      {/* Page Heading */}
 
+      <div className="mb-10 flex items-center justify-between">
 
-      <div className="cart-page">
+        <div>
 
-        {/* ======================
-            CART ITEMS SECTION
-        ====================== */}
+          <h1 className="text-4xl font-bold text-gray-900">
+            Shopping Cart
+          </h1>
 
-        <div className="cart-items-section">
-
-          <h2>Your Cart</h2>
-
-
-
-          {cartItems.length === 0 ? (
-
-            <h3>
-              Your Cart is Empty.
-              Add some items to get started!
-            </h3>
-
-          ) : (
-
-            cartItems.map((item) => (
-
-              <CartItemCard
-                key={item.product_id}
-                item={item}
-                onRemove={handleRemoveItem}
-                onQuantityChange={handleQuantityChange}
-              />
-
-            ))
-
-          )}
+          <p className="mt-2 text-gray-500">
+            Review your items before checkout.
+          </p>
 
         </div>
 
-
-
-        {/* ======================
-            ORDER SUMMARY
-        ====================== */}
-
         {cartItems.length > 0 && (
+          <div className="rounded-2xl border border-indigo-100 bg-indigo-50 px-5 py-3">
 
-          <OrderSummary
-            subtotal={subtotal}
-            totalProducts={cartItems.length}
-            onCheckout={handleCheckout}
-          />
+            <p className="text-sm text-indigo-600">
+              Total Items
+            </p>
 
+            <h2 className="text-2xl font-bold text-indigo-700">
+              {cartItems.length}
+            </h2>
+
+          </div>
         )}
 
       </div>
 
+      {/* Loading */}
 
+      {loading && (
+        <div className="py-32 text-center text-lg text-gray-500">
+          Loading your cart...
+        </div>
+      )}
 
-      <Footer />
+      {/* Error */}
 
-    </div>
-  );
+      {!loading && error && (
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center text-red-600">
+          {error}
+        </div>
+      )}
+
+      {/* Main Content */}
+
+      {!loading && !error && (
+
+        cartItems.length === 0 ? (
+
+          <div className="flex flex-col items-center rounded-3xl bg-white py-24 shadow-sm">
+
+            <div className="mb-6 text-7xl">
+              🛒
+            </div>
+
+            <h2 className="text-3xl font-bold text-gray-900">
+              Your cart is empty
+            </h2>
+
+            <p className="mt-3 text-gray-500">
+              Looks like you haven't added anything yet.
+            </p>
+
+            <button
+              onClick={() => navigate("/customerhome")}
+              className="mt-8 rounded-2xl bg-indigo-600 px-8 py-4 font-semibold text-white transition hover:bg-indigo-700"
+            >
+              Continue Shopping
+            </button>
+
+          </div>
+
+        ) : (
+
+          <div className="grid gap-10 lg:grid-cols-[2fr_420px]">
+
+            {/* Left */}
+
+            <div>
+
+              {cartItems.map((item) => (
+
+                <CartItemCard
+                  key={item.product_id}
+                  item={item}
+                  onRemove={handleRemoveItem}
+                  onQuantityChange={handleQuantityChange}
+                />
+
+              ))}
+
+            </div>
+
+            {/* Right */}
+
+            <OrderSummary
+              subtotal={subtotal}
+              totalProducts={cartItems.length}
+              onCheckout={handleCheckout}
+            />
+
+          </div>
+
+        )
+
+      )}
+
+    </main>
+
+    <Footer />
+
+  </div>
+);
 }
 
 export default CartPage;
