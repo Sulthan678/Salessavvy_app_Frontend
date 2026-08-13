@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../services/productService";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 import ProductGallery from "../components/ProductDetail/ProductGallery";
 import ProductInfo from "../components/ProductDetail/ProductInfo";
 import ProductDescription from "../components/ProductDetail/ProductDescription";
@@ -47,7 +49,9 @@ function ProductDetailPage() {
     }
 
     return (
-    <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50">
+        <Header />
+
 
         <div className="mx-auto max-w-7xl px-8 py-10">
 
@@ -67,14 +71,14 @@ function ProductDetailPage() {
                 username={username} />
 
             </div>
-            <ProductDescription product={product}/>
-            <ProductReviews product={product} />
-            <SimilarProducts productId={product.product_id}
-                onAddToCart={() => {}}/>
+                <ProductDescription product={product}/>
+                <ProductReviews product={product} />
+                <SimilarProducts productId={product.product_id}
+                    onAddToCart={() => {}}/>
  
             </div>  
 
-        
+        <Footer />
 
     </div>
     );

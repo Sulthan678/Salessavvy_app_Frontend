@@ -17,7 +17,7 @@ function ProductGallery({ product }) {
 
             {/* Thumbnails */}
 
-            <div className="flex flex-col gap-4">
+            {/* <div className="flex flex-col gap-4">
 
                 {product.images?.map((image, index) => (
 
@@ -33,17 +33,17 @@ function ProductGallery({ product }) {
                         }`}
                     >
 
-                        <img
+                        {/* <img
                             src={image}
                             alt=""
                             className="h-full w-full object-cover"
-                        />
+                        /> */}
 
-                    </button>
+                    {/* </button>
 
-                ))}
+                ))} */}
 
-            </div>
+            {/* </div> */} 
 
             {/* Main Image */}
 

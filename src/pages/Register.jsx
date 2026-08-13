@@ -8,12 +8,12 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    role: ""
-  });
+    const [formData, setFormData] = useState({
+      username: "",
+      email: "",
+      password: "",
+      role: ""
+    });
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);

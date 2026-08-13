@@ -17,7 +17,7 @@ function Footer() {
     return (
         <footer className="mt-auto border-t border-gray-200 bg-white">
 
-            <div className="mx-auto max-w-7xl px-8 py-14">
+            <div className="mx-auto max-w-7xl px-8 py-10">
 
                 <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
 
@@ -42,7 +42,7 @@ function Footer() {
 
                             <motion.a
                                 // whileHover={{ y: -4 }}
-                                href="https://github.com/"
+                                href="https://Facebook.com/"
                                 target="_blank"
                                 rel="noreferrer"
                                 className="rounded-full border border-gray-200 p-3 transition hover:border-gray-800 hover:bg-blue-600 hover:text-white"

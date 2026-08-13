@@ -10,12 +10,14 @@ import ProfileDropdown from "../Profile/ProfileDropdown";
 
 function Header({
   cartCount,
+  wishlistCount,
   username,
   onSearch,
   onSuggestion,
   suggestions
 }) {
-
+  
+  const [wishlistCount, setWishlistCount] = useState(0);
   const [keyword, setKeyword] = useState("");
   const searchRef = useRef(null);
   const navigate = useNavigate();
@@ -124,7 +126,9 @@ function Header({
 
         {username !== "Admin" && (
           <>
-          <WishlistIcon />
+          <WishlistIcon 
+          count={wishlistCount}
+          />
           <CartIcon count={cartCount} />
           </>
         )}
