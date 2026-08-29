@@ -17,7 +17,7 @@ function Header({
   suggestions
 }) {
   
-  const [wishlistCount, setWishlistCount] = useState(0);
+  // const [wishlistCount, setWishlistCount] = useState(0);
   const [keyword, setKeyword] = useState("");
   const searchRef = useRef(null);
   const navigate = useNavigate();
