@@ -6,6 +6,7 @@ import Footer from "../Footer/Footer";
 import OrderCard from "./OrderCard";
 import OrderDetailsPage from "./OrderDetailsPage";
 import EmptyOrders from "./EmptyOrders";
+import { fetchUserOrders } from "../../services/orderService";
 import "./Orders.css";
 
 function OrdersPage() {
@@ -39,39 +40,15 @@ function OrdersPage() {
 
     try {
 
-      const response = await fetch(
+      const response = await fetchUserOrders();
 
-        "http://localhost:9090/api/orders",
+      console.log("ORDERS:", response.data);
 
-        {
-          credentials: "include"
-        }
-      );
-
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Failed to fetch orders"
-        );
-      }
-
-
-
-      const data = await response.json();
-
-      console.log("ORDERS:", data);
-
-
-
-      setOrders(data.products || []);
+      setOrders(response.data.products || []);
 
       setUsername(
-        data.username || "Guest"
+        response.data.username || "Guest"
       );
-
-
 
     } catch (err) {
 

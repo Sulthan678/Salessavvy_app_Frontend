@@ -7,6 +7,7 @@ import {
   LogOut,
   ChevronDown,
 } from "lucide-react";
+import { logoutUser } from "../../services/authService";
 
 function ProfileDropdown({ username }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,17 +42,8 @@ function ProfileDropdown({ username }) {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:9090/api/auth/logout",
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        navigate("/");
-      }
+      await logoutUser();
+      navigate("/");
     } catch (error) {
       console.error(error);
     }

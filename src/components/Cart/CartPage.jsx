@@ -6,6 +6,7 @@ import Footer from "../Footer/Footer";
 
 import CartItemCard from "./CartItemCard";
 import OrderSummary from "./OrderSummary";
+import { createPayment, verifyPayment } from "../../services/orderService";
 
 import "./Cart.css";
 
@@ -285,36 +286,8 @@ function CartPage() {
          CREATE ORDER
       ========================= */
 
-      const response = await fetch(
-
-        "http://localhost:9090/api/payment/create",
-
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-          credentials: "include",
-
-          body: JSON.stringify(requestBody)
-        }
-      );
-
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          await response.text()
-        );
-      }
-
-
-
-      const razorpayOrderId =
-        await response.text();
+      const paymentResponse = await createPayment(requestBody);
+      const razorpayOrderId = paymentResponse.data;
 
 
 
@@ -346,41 +319,21 @@ function CartPage() {
 
           try {
 
-            const verifyResponse = await fetch(
+            const result = await verifyPayment({
 
-              "http://localhost:9090/api/payment/verify",
+              razorpayOrderId:
+                response.razorpay_order_id,
 
-              {
-                method: "POST",
+              razorpayPaymentId:
+                response.razorpay_payment_id,
 
-                headers: {
-                  "Content-Type": "application/json"
-                },
-
-                credentials: "include",
-
-                body: JSON.stringify({
-
-                  razorpayOrderId:
-                    response.razorpay_order_id,
-
-                  razorpayPaymentId:
-                    response.razorpay_payment_id,
-
-                  razorpaySignature:
-                    response.razorpay_signature
-                })
-              }
-            );
+              razorpaySignature:
+                response.razorpay_signature
+            });
 
 
 
-            const result =
-              await verifyResponse.text();
-
-
-
-            if (verifyResponse.ok) {
+            if (result.status === 200) {
 
               alert(
                 "Payment verified successfully!"
@@ -391,8 +344,7 @@ function CartPage() {
             } else {
 
               alert(
-                "Payment verification failed: " +
-                result
+                "Payment verification failed"
               );
             }
 

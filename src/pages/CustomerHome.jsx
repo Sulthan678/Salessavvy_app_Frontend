@@ -3,7 +3,8 @@ import Header from "../components/Header/Header";
 import CategoryNavigation from "../components/CategoryNavigation/CategoryNavigation";
 import ProductList from "../components/Product/ProductList";
 import Footer from "../components/Footer/Footer";
-import { searchProducts, getSuggestions } from "../services/productService";
+import { searchProducts, getSuggestions, getProductsByCategory } from "../services/productService";
+import { getCartCount, addToCart } from "../services/cartService";
 // import "./CustomerHome.css";
 
 function CustomerHomePage() {
@@ -30,15 +31,10 @@ function CustomerHomePage() {
   const fetchProducts = async (category = "Shirts") => {
     try {
 
-      const res = await fetch(
-        `http://localhost:9090/api/products?category=${category}`,
-        { credentials: "include" }
-      );
+      const res = await getProductsByCategory(category);
 
-      const data = await res.json();
-
-      setProducts(data.products || []);
-      setUsername(data.user?.name || "Guest");
+      setProducts(res.data.products || []);
+      setUsername(res.data.user?.name || "Guest");
 
     } catch (err) {
       console.error(err);
@@ -95,21 +91,9 @@ function CustomerHomePage() {
   setIsCartLoading(true);
 
   try {
-    const res = await fetch(
-      `http://localhost:9090/api/cart/items/count?username=${username}`,
-      { credentials: "include" }
-    );
+    const response = await getCartCount();
 
-    // ❗ ADD THIS CHECK
-    if (!res.ok) {
-      setCartCount(0); // fallback
-      return;
-    }
-
-    const count = await res.json();
-
-    // ❗ Ensure it's number
-    setCartCount(typeof count === "number" ? count : 0);
+    setCartCount(typeof response.data === "number" ? response.data : 0);
 
   } catch (err) {
     console.error(err);
@@ -129,14 +113,7 @@ function CustomerHomePage() {
   const handleAddToCart = async (productId) => {
     try {
 
-      await fetch("http://localhost:9090/api/cart/add", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, productId })
-      });
+      await addToCart(productId);
 
       fetchCartCount();
 

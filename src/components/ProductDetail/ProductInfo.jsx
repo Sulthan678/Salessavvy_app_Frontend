@@ -6,6 +6,7 @@ import QuantitySelector from "./QuantitySelector";
 import TrustBadges from "./TrustBadges";
 import ProductHighlights from "./ProductHighlights";
 import WishlistService from "../../services/WishlistService";
+import { addToCart } from "../../services/cartService";
 
 function ProductInfo({ product, username }) {
    
@@ -82,22 +83,7 @@ function ProductInfo({ product, username }) {
         const handleAddToCart = async () => {
     try {
 
-        const response = await fetch("http://localhost:9090/api/cart/add", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username,
-                productId: product.product_id,
-                quantity
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error("Failed to add product");
-        }
+        await addToCart(product.product_id, quantity);
 
         toast.success("Added to cart!");
 

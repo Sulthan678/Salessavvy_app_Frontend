@@ -5,6 +5,17 @@ const API = axios.create({
   withCredentials: true // IMPORTANT for cookies
 });
 
+// Login user
 export const loginUser = (data) => {
   return API.post("/api/auth/login", data);
+};
+
+// Register user
+export const registerUser = (data) => {
+  return API.post("/api/users/register", data);
+};
+
+// Logout user
+export const logoutUser = () => {
+  return API.post("/api/auth/logout");
 };

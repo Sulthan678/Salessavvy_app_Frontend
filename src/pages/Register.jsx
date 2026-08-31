@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import { registerUser } from "../services/authService";
 
 // import "../styles/Register.css";
 
@@ -69,28 +69,22 @@ function Register() {
 
     try {
 
-      const response = await axios.post(
-        "http://localhost:9090/api/users/register",
-        formData
-      );
+      const response = await registerUser(formData);
 
       alert(response.data.message);
 
       // redirect to login page
       console.log("Redirecting to login...");
-navigate("/login");
+      navigate("/login");
 
-    } catch (error) {
+      } catch (error) {
 
-  if (error.response) {
-    alert(error.response.data.error);
-  } else {
-    alert("Server not responding");
-  }
-
-
-
-    }
+        if (error.response) {
+          alert(error.response.data.error);
+        } else {
+          alert("Server not responding");
+        }
+      }
 
   }
 

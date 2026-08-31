@@ -5,6 +5,7 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 
 import CustomModal from "../components/Admin/CustomModal";
+import { addProduct, deleteProduct, getUserById, updateUser, getMonthlyBusiness } from "../services/adminService";
 
 import "../components/Admin/Admin.css";
 
@@ -95,45 +96,24 @@ function AdminHome() {
 
   try {
 
-    const response = await fetch(
-      "http://localhost:9090/admin/products/add",
-      {
-        method: "POST",
+    const response = await addProduct({
 
-        credentials: "include",
+      name: productData.name,
 
-        headers: {
-          "Content-Type": "application/json"
-        },
+      description: productData.description,
 
-        body: JSON.stringify({
+      price: Number(productData.price),
 
-          name: productData.name,
+      stock: Number(productData.stock),
 
-          description: productData.description,
+      categoryId: Number(productData.categoryId),
 
-          price: Number(productData.price),
-
-          stock: Number(productData.stock),
-
-          categoryId: Number(productData.categoryId),
-
-          imageUrl: productData.imageUrl
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        data.message || "Failed to add product"
-      );
-    }
+      imageUrl: productData.imageUrl
+    });
 
     alert("Product Added Successfully");
 
-    console.log(data);
+    console.log(response.data);
 
     setModalType(null);
 
@@ -153,33 +133,9 @@ function AdminHome() {
 
   try {
 
-    const response = await fetch(
-      "http://localhost:9090/admin/products/delete",
-      {
-        method: "DELETE",
-
-        credentials: "include",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-
-          productId: Number(data.productId)
-        })
-      }
-    );
-
-    const result = await response.text();
-
-    if (!response.ok) {
-      throw new Error(result);
-    }
+    await deleteProduct(Number(data.productId));
 
     alert("Product Deleted Successfully");
-
-    console.log(result);
 
     setModalType(null);
 
@@ -198,34 +154,9 @@ function AdminHome() {
 
   try {
 
-   const response = await fetch(
+    const result = await getUserById(data.userId);
 
-  `http://localhost:9090/admin/user/getbyid?userId=${data.userId}`,
-
-  {
-    method: "GET",
-
-    credentials: "include"
-  }
-);
-
-    // const result = await response.json();
-
-    // console.log(result);
-
-   if (!response.ok) {
-
-    const errorMessage =
-      await response.text();
-
-    throw new Error(errorMessage);
-  }
-
-  // ===========
-    const result = await response.json();
-
-    setResponse(result);
-  // ===========
+    setResponse(result.data);
 
   } catch (error) {
 
@@ -244,29 +175,9 @@ function AdminHome() {
       // console.log("USER ID:", data.userId);
   try {
 
-    const response = await fetch(
+    const result = await getUserById(data.userId);
 
-      `http://localhost:9090/admin/user/getbyid?userId=${data.userId}`,
-
-      {
-        method: "GET",
-        credentials: "include"
-      }
-    );
-
-    if (!response.ok) {
-
-      const errorMessage =
-        await response.text();
-
-      throw new Error(errorMessage);
-    }
-
-    const result =
-      await response.json();
-
-    setSelectedUser(result);
-
+    setSelectedUser(result.data);
 
   } catch (error) {
 
