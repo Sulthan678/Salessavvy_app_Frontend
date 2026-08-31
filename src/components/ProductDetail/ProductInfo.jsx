@@ -7,10 +7,12 @@ import TrustBadges from "./TrustBadges";
 import ProductHighlights from "./ProductHighlights";
 import WishlistService from "../../services/WishlistService";
 import { addToCart } from "../../services/cartService";
+import { useWishlist } from "../../context/WishlistContext";
 
 function ProductInfo({ product, username }) {
    
     const navigate = useNavigate();
+    const { addToWishlist, removeFromWishlist } = useWishlist();
     const [isWishlisted, setIsWishlisted] = useState(false);
     useEffect(() => {
     checkWishlist();
@@ -48,20 +50,20 @@ function ProductInfo({ product, username }) {
 
     try {
 
-        const res = await WishlistService.toggleWishlist(product.product_id);
-
-        const added = res.data;
-
-        setIsWishlisted(added);
-
-        if (added) {
-
-            toast.success("❤️ Added to Wishlist");
-
+        if (isWishlisted) {
+            // Remove from wishlist
+            const success = await removeFromWishlist(product.product_id);
+            if (success) {
+                setIsWishlisted(false);
+                toast.success("💔 Removed from Wishlist");
+            }
         } else {
-
-            toast.success("💔 Removed from Wishlist");
-
+            // Add to wishlist
+            const success = await addToWishlist(product.product_id);
+            if (success) {
+                setIsWishlisted(true);
+                toast.success("❤️ Added to Wishlist");
+            }
         }
 
     } catch (err) {

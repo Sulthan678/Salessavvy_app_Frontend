@@ -192,34 +192,7 @@ function AdminHome() {
     console.log("UPDATE DATA:", userData);
   try {
 
-    const response = await fetch(
-
-      "http://localhost:9090/admin/user/modify",
-
-      {
-        method: "PUT",
-
-        credentials: "include",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify(userData)
-      }
-    );
-
-    if (!response.ok) {
-
-  const errorMessage =
-    await response.text();
-
-  throw new Error(errorMessage);
-}
-
-
-    const result =
-      await response.json();
+    await updateUser(userData);
 
     alert("User Updated Successfully");
 

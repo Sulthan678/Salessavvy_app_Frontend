@@ -1,24 +1,10 @@
 import { Heart } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import WishlistService from "../../services/WishlistService";
+import { useWishlist } from "../../context/WishlistContext";
 
 function WishlistIcon() {
     const navigate = useNavigate();
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-        fetchWishlistCount();
-    }, []);
-
-    const fetchWishlistCount = async () => {
-        try {
-            const response = await WishlistService.getWishlistCount();
-            setCount(response.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    const { wishlistCount } = useWishlist();
 
    return (
     <button
@@ -51,7 +37,7 @@ function WishlistIcon() {
             "
         />
 
-        {count > 0 && (
+        {wishlistCount > 0 && (
             <span
                 className="
                     absolute
@@ -71,7 +57,7 @@ function WishlistIcon() {
                     ring-white
                 "
             >
-                {count}
+                {wishlistCount}
             </span>
         )}
     </button>

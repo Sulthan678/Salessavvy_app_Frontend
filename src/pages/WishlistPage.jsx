@@ -1,46 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
-import WishlistService from "../services/WishlistService";
 import WishlistGrid from "../components/Wishlist/WishlistGrid";
 import EmptyWishlist from "../components/Wishlist/EmptyWishlist";
 import toast from "react-hot-toast";
+import { useWishlist } from "../context/WishlistContext";
 
 function WishlistPage() {
-    const [wishlistItems, setWishlistItems] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { wishlistItems, setWishlistItems, fetchWishlistItems, removeFromWishlist } = useWishlist();
+    const loading = false;
 
     useEffect(() => {
-        fetchWishlist();
+        fetchWishlistItems();
     }, []);
 
-    const fetchWishlist = async () => {
-        try {
-            const response = await WishlistService.getWishlist();
-            console.log(response.data);
-            setWishlistItems(response.data.wishlist);
-            
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to load wishlist");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const removeWishlistItem = async (productId) => {
-        try {
-            await WishlistService.toggleWishlist(productId);
-
+    const handleRemoveItem = async (productId) => {
+        const success = await removeFromWishlist(productId);
+        
+        if (success) {
+            // Update local state
             setWishlistItems((prev) =>
-                prev.filter(
-                    (item) => item.product_id !== productId
-                )
+                prev.filter((item) => item.product_id !== productId)
             );
-
             toast.success("Removed from wishlist");
-        } catch (error) {
-            console.error(error);
+        } else {
             toast.error("Something went wrong");
         }
     };
@@ -65,7 +48,7 @@ function WishlistPage() {
                     ) : (
                         <WishlistGrid
                             items={wishlistItems}
-                            onRemove={removeWishlistItem}
+                            onRemove={handleRemoveItem}
                         />
                     )}
                 </div>
