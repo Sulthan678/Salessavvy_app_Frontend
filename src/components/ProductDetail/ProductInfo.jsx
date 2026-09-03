@@ -8,11 +8,13 @@ import ProductHighlights from "./ProductHighlights";
 import WishlistService from "../../services/WishlistService";
 import { addToCart } from "../../services/cartService";
 import { useWishlist } from "../../context/WishlistContext";
+import { useCart } from "../../context/CartContext";
 
 function ProductInfo({ product, username }) {
    
     const navigate = useNavigate();
     const { addToWishlist, removeFromWishlist } = useWishlist();
+    const { incrementCartCount } = useCart();
     const [isWishlisted, setIsWishlisted] = useState(false);
     useEffect(() => {
     checkWishlist();
@@ -86,6 +88,9 @@ function ProductInfo({ product, username }) {
     try {
 
         await addToCart(product.product_id, quantity);
+
+        // Update cart count in context
+        incrementCartCount();
 
         toast.success("Added to cart!");
 

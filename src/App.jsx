@@ -9,12 +9,14 @@ import OrdersPage from "./components/Orders/OrdersPage";
 import OrderDetailsPage from "./components/Orders/OrderDetailsPage";
 import WishlistPage from "./pages/WishlistPage";
 import { WishlistProvider } from "./context/WishlistContext";
+import { CartProvider } from "./context/CartContext";
 
 
 function App() {
   return (
-    <WishlistProvider>
-      <Routes>
+    <CartProvider>
+      <WishlistProvider>
+        <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/customerhome" element={<CustomerHome />} />
@@ -26,7 +28,8 @@ function App() {
         <Route path="/orders/:orderId" element={<OrderDetailsPage />}/>
         <Route path="/wishlist" element={<WishlistPage />}/>
       </Routes>
-    </WishlistProvider>
+      </WishlistProvider>
+    </CartProvider>
   );
 }
 

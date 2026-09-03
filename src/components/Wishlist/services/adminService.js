@@ -29,15 +29,3 @@ export const updateUser = (userData) => {
 export const getMonthlyBusiness = (month, year) => {
   return API.get(`/admin/business/monthly?month=${month}&year=${year}`);
 };
-
-export const getDailyBusiness = (date) => {
-  return API.get(`/admin/business/daily?date=${date}`);
-};
-
-export const getYearlyBusiness = (year) => {
-  return API.get(`/admin/business/yearly?year=${year}`);
-};
-
-export const getOverallBusiness = () => {
-  return API.get("/admin/business/overall");
-};

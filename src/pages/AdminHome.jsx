@@ -3,9 +3,9 @@ import { useState } from "react";
 
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
-
+import {getMonthlyBusiness, getDailyBusiness, getYearlyBusiness, getOverallBusiness} from "../services/adminService";
 import CustomModal from "../components/Admin/CustomModal";
-import { addProduct, deleteProduct, getUserById, updateUser, getMonthlyBusiness } from "../services/adminService";
+import { addProduct, deleteProduct, getUserById, updateUser} from "../services/adminService";
 
 import "../components/Admin/Admin.css";
 
@@ -186,6 +186,8 @@ function AdminHome() {
     alert(error.message);
   }
 };
+
+
               // UPDATE USER DETAILS=======>
 
   const handleModifyUserUpdate = async (userData) => {
@@ -216,34 +218,17 @@ function AdminHome() {
 
   try {
 
-    const response = await fetch(
+    const response =
+      await getMonthlyBusiness(data.month, data.year);
 
-      `http://localhost:9090/admin/business/monthly?month=${data.month}&year=${data.year}`,
-
-      {
-        method: "GET",
-        credentials: "include"
-      }
-    );
-
-    if (!response.ok) {
-
-      const errorMessage =
-        await response.text();
-
-      throw new Error(errorMessage);
-    }
-
-    const result =
-      await response.json();
-
-    setResponse(result);
+    setResponse(response.data);
 
   } catch (error) {
 
     console.error(error);
 
-    alert(error.message);
+    alert(error.response?.data || error.message);
+
   }
 };
 
@@ -253,78 +238,42 @@ function AdminHome() {
 
     const handleDailyBusiness = async (data) => {
 
-     try {
+  try {
 
-      const response = await fetch(
+    const response =
+      await getDailyBusiness(data.date);
 
-      `http://localhost:9090/admin/business/daily?date=${data.date}`,
-
-      {
-        method: "GET",
-        credentials: "include"
-      }
-    );
-
-    if (!response.ok) {
-
-      const errorMessage =
-        await response.text();
-
-      throw new Error(errorMessage);
-    }
-
-    const result =
-      await response.json();
-
-    setResponse(result);
+    setResponse(response.data);
 
   } catch (error) {
 
     console.error(error);
 
-    alert(error.message);
+    alert(error.response?.data || error.message);
+
   }
 };
-
     //============================
     // GET YEARLY BUSINESS DETAIL ==========>
     //============================
 
     const handleYearlyBusiness = async (data) => {
 
-      try {
+  try {
 
-        const response = await fetch(
+    const response =
+      await getYearlyBusiness(data.year);
 
-        `http://localhost:9090/admin/business/yearly?year=${data.year}`,
+    setResponse(response.data);
 
-                {
-                  method: "GET",
-                  credentials: "include"
-                }
-              );
+  } catch (error) {
 
-              if (!response.ok) {
+    console.error(error);
 
-                const errorMessage =
-                  await response.text();
+    alert(error.response?.data || error.message);
 
-                throw new Error(errorMessage);
-              }
-
-              const result =
-                await response.json();
-
-              setResponse(result);
-
-            } catch (error) {
-
-              console.error(error);
-
-              alert(error.message);
-            }
-          };
-
+  }
+};
 
      //============================
     // GET YEARLY BUSINESS DETAIL ==========>
@@ -332,39 +281,21 @@ function AdminHome() {
 
       const handleOverallBusiness = async () => {
 
-        try {
+  try {
 
-            const response = await fetch(
+    const response =
+      await getOverallBusiness();
 
-            "http://localhost:9090/admin/business/overall",
+    setResponse(response.data);
 
-                  {
-                    method: "GET",
-                    credentials: "include"
-                  }
-                );
+  } catch (error) {
 
-                if (!response.ok) {
+    console.error(error);
 
-                  const errorMessage =
-                    await response.text();
+    alert(error.response?.data || error.message);
 
-                  throw new Error(errorMessage);
-                }
-
-                const result =
-                  await response.json();
-
-                setResponse(result);
-
-              } catch (error) {
-
-                console.error(error);
-
-                alert(error.message);
-              }
-            };
-
+  }
+};
 
   return (
 

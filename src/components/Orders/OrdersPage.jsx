@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-
+import { getCartCount } from "../../services/cartService";
 import OrderCard from "./OrderCard";
 import OrderDetailsPage from "./OrderDetailsPage";
 import EmptyOrders from "./EmptyOrders";
@@ -69,53 +69,26 @@ function OrdersPage() {
      FETCH CART COUNT
   ========================= */
 
-  const fetchCartCount = async () => {
+ const fetchCartCount = async () => {
+  setIsCartLoading(true);
 
-    setIsCartLoading(true);
+  try {
+    const response = await getCartCount();
 
-    try {
+    setCartCount(response.data);
+    setCartError(false);
 
-      const response = await fetch(
+  } catch (error) {
 
-        `http://localhost:9090/api/cart/items/count?username=${username}`,
+    console.error(error);
+    setCartError(true);
 
-        {
-          credentials: "include"
-        }
-      );
+  } finally {
 
+    setIsCartLoading(false);
 
-
-      if (!response.ok) {
-
-        throw new Error(
-          "Failed to fetch cart count"
-        );
-      }
-
-
-
-      const count =
-        await response.json();
-
-      setCartCount(count);
-
-      setCartError(false);
-
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      setCartError(true);
-
-    } finally {
-
-      setIsCartLoading(false);
-
-    }
-  };
+  }
+};
 
 
 

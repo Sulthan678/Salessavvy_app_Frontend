@@ -4,7 +4,8 @@ import CategoryNavigation from "../components/CategoryNavigation/CategoryNavigat
 import ProductList from "../components/Product/ProductList";
 import Footer from "../components/Footer/Footer";
 import { searchProducts, getSuggestions, getProductsByCategory } from "../services/productService";
-import { getCartCount, addToCart } from "../services/cartService";
+import { addToCart } from "../services/cartService";
+import { useCart } from "../context/CartContext";
 // import "./CustomerHome.css";
 
 function CustomerHomePage() {
@@ -12,19 +13,12 @@ function CustomerHomePage() {
   const [products, setProducts] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Shirts");
-  const [cartCount, setCartCount] = useState(0);
   const [username, setUsername] = useState("");
-  const [isCartLoading, setIsCartLoading] = useState(true);
+  const { cartCount, isLoading: isCartLoading, incrementCartCount } = useCart();
 
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  useEffect(() => {
-    if (username) {
-      fetchCartCount();
-    }
-  }, [username]);
 
 
 
@@ -87,22 +81,6 @@ function CustomerHomePage() {
 };
 //======================
 
-  const fetchCartCount = async () => {
-  setIsCartLoading(true);
-
-  try {
-    const response = await getCartCount();
-
-    setCartCount(typeof response.data === "number" ? response.data : 0);
-
-  } catch (err) {
-    console.error(err);
-    setCartCount(0);
-  } finally {
-    setIsCartLoading(false);
-  }
-};    
-
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     fetchProducts(category);
@@ -115,7 +93,7 @@ function CustomerHomePage() {
 
       await addToCart(productId);
 
-      fetchCartCount();
+      incrementCartCount();
 
     } catch (err) {
       console.error(err);

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-
 import CartItemCard from "./CartItemCard";
 import OrderSummary from "./OrderSummary";
 import { createPayment, verifyPayment } from "../../services/orderService";
+import {getCartItems, deleteCartItem, updateCartItemQuantity} from "../../services/cartService";
 
-import "./Cart.css";
+//import "./Cart.css";
 
 function CartPage() {
 
@@ -40,58 +39,36 @@ function CartPage() {
 
   const fetchCartItems = async () => {
 
-    try {
+  try {
 
-      setLoading(true);
+    setLoading(true);
 
-      const response = await fetch(
-        "http://localhost:9090/api/cart/items",
-        {
-          credentials: "include"
-        }
-      );
+    const response = await getCartItems();
 
+    const data = response.data;
 
+    console.log("CART DATA:", data);
 
-      if (!response.ok) {
+    setCartItems(
+      data?.cart?.products || []
+    );
 
-        throw new Error("Failed to fetch cart items");
+    setUsername(
+      data?.username || ""
+    );
 
-      }
+  } catch (error) {
 
+    console.error(error);
 
+    setError("Failed to load cart items");
 
-      const data = await response.json();
+  } finally {
 
-      console.log("CART DATA:", data);
+    setLoading(false);
 
-
-
-      setCartItems(
-        data?.cart?.products || []
-      );
-
-
-
-      setUsername(
-        data?.username || ""
-      );
-
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      setError("Failed to load cart items");
-
-    } finally {
-
-      setLoading(false);
-
-    }
-  };
-
+  }
+};
 
 
   /* =========================
@@ -100,58 +77,22 @@ function CartPage() {
 
   const handleRemoveItem = async (productId) => {
 
-    try {
+  try {
 
-      const response = await fetch(
+    await deleteCartItem(productId);
 
-        "http://localhost:9090/api/cart/delete",
+    setCartItems((prevItems) =>
+      prevItems.filter(
+        (item) => item.product_id !== productId
+      )
+    );
 
-        {
-          method: "DELETE",
+  } catch (error) {
 
-          headers: {
-            "Content-Type": "application/json"
-          },
+    console.error(error);
 
-          credentials: "include",
-
-          body: JSON.stringify({
-            username,
-            productId
-          })
-        }
-      );
-
-
-
-      if (!response.ok) {
-
-        throw new Error("Failed to remove item");
-
-      }
-
-
-
-      // UPDATE UI
-
-      setCartItems((prevItems) =>
-
-        prevItems.filter(
-
-          (item) =>
-            item.product_id !== productId
-        )
-      );
-
-
-
-    } catch (error) {
-
-      console.error(error);
-
-    }
+  }
   };
-
 
 
   /* =========================
@@ -159,102 +100,53 @@ function CartPage() {
   ========================= */
 
   const handleQuantityChange = async (
-
     productId,
     newQuantity
-
-  ) => {
+) => {
 
     try {
 
-      // REMOVE ITEM IF QUANTITY <= 0
+        // REMOVE ITEM IF QUANTITY <= 0
+        if (newQuantity <= 0) {
 
-      if (newQuantity <= 0) {
+            handleRemoveItem(productId);
 
-        handleRemoveItem(productId);
-
-        return;
-      }
-
-
-
-      // MAX LIMIT
-
-      if (newQuantity > 10) {
-
-        alert("Maximum quantity reached");
-
-        return;
-      }
-
-
-
-      const response = await fetch(
-
-        "http://localhost:9090/api/cart/update",
-
-        {
-          method: "PUT",
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-          credentials: "include",
-
-          body: JSON.stringify({
-
-            username,
-
-            productId,
-
-            quantity: newQuantity
-
-          })
+            return;
         }
-      );
 
+        // MAX LIMIT
+        if (newQuantity > 10) {
 
+            alert("Maximum quantity reached");
 
-      if (!response.ok) {
+            return;
+        }
 
-        throw new Error("Failed to update quantity");
+        await updateCartItemQuantity(
+            productId,
+            newQuantity
+        );
 
-      }
-
-
-
-      // UPDATE UI
-
-      setCartItems((prevItems) =>
-
-        prevItems.map((item) =>
-
-          item.product_id === productId
-
-            ? {
-
-                ...item,
-
-                quantity: newQuantity,
-
-                total_price:
-                  item.price_per_unit * newQuantity
-              }
-
-            : item
-        )
-      );
-
-
+        // UPDATE UI
+        setCartItems((prevItems) =>
+            prevItems.map((item) =>
+                item.product_id === productId
+                    ? {
+                        ...item,
+                        quantity: newQuantity,
+                        total_price:
+                            item.price_per_unit * newQuantity
+                    }
+                    : item
+            )
+        );
 
     } catch (error) {
 
-      console.error(error);
+        console.error(error);
 
     }
-  };
-
+};
 
 
   /* =========================

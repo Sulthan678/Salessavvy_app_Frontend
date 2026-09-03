@@ -7,9 +7,10 @@ import WishlistIcon from "../Wishlist/WishlistIcon";
 // import "./Header.css";
 import CartIcon from "../Cart/CartIcon";
 import ProfileDropdown from "../Profile/ProfileDropdown";
+import { useCart } from "../../context/CartContext";
 
 function Header({
-  cartCount,
+  cartCount: propCartCount,
   wishlistCount,
   username,
   onSearch,
@@ -17,9 +18,13 @@ function Header({
   suggestions
 }) {
   
+  const { cartCount: contextCartCount, isLoading } = useCart();
   const [keyword, setKeyword] = useState("");
   const searchRef = useRef(null);
   const navigate = useNavigate();
+
+  // Use prop cartCount if provided, otherwise use context cartCount
+  const cartCount = propCartCount !== undefined ? propCartCount : contextCartCount;
 
  const handleSearch = () => {
   if (!keyword.trim()) return;
